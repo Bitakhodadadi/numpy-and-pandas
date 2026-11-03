@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>راهنمای کاربردی NumPy و Pandas برای بچه‌ها</title>
+<style>
+:root{--bg:#f5f7ff;--ink:#202642;--muted:#5f6886;--card:#fff;--line:#e1e6f5;--purple:#6557d9;--teal:#087f8c;--orange:#f19a38;--code:#171b2e;--green:#13795b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Segoe UI",sans-serif;line-height:1.95}
+header{padding:42px 20px 34px;background:radial-gradient(circle at 15% 10%,#8277f5 0,transparent 35%),linear-gradient(125deg,#242a50,#403b8e);color:white}
+.hero,main,footer{max-width:1100px;margin:auto}.eyebrow{font-size:.9rem;color:#d8d5ff}.hero h1{font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.45;margin:8px 0}.hero p{max-width:760px;color:#eeedff}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.chip{border:1px solid #ffffff60;border-radius:999px;padding:4px 12px;font-size:.9rem}
+main{padding:22px 16px 60px}.layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:22px;align-items:start}.sidebar{position:sticky;top:14px;background:white;border:1px solid var(--line);border-radius:18px;padding:16px}.sidebar strong{display:block;margin-bottom:8px}.sidebar a{display:block;color:var(--muted);text-decoration:none;padding:5px 8px;border-radius:8px;font-size:.9rem}.sidebar a:hover{background:#f0efff;color:var(--purple)}section,.intro-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:18px;box-shadow:0 7px 24px #25306a08}.intro-card{background:linear-gradient(120deg,#eeedff,#e7fbfb);border:0}.section-kicker{color:var(--purple);font-weight:bold;font-size:.86rem}h2{font-size:1.55rem;line-height:1.5;margin:.2rem 0 .6rem}h3{font-size:1.15rem;margin:1.3rem 0 .35rem}p{margin:.45rem 0 .8rem}.muted{color:var(--muted)}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mini{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fcfcff}.mini h3{margin-top:0}.pill{display:inline-block;border-radius:8px;background:#eeedff;color:#493fbb;padding:2px 9px;font-size:.82rem}.pill.teal{background:#def7f5;color:#086a74}.pill.orange{background:#fff0db;color:#8a4d0a}pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--code);color:#f2f4ff;padding:16px;border-radius:13px;font:14px/1.8 Consolas,Monaco,monospace;overflow-x:auto;margin:10px 0}code{font-family:Consolas,Monaco,monospace;direction:ltr;unicode-bidi:embed}.inline-code{background:#f0f1f8;border-radius:5px;padding:1px 5px;color:#4d45a4}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.94rem}th,td{border:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}th{background:#f2f3ff}.note{border-right:4px solid var(--teal);background:#eafafa;padding:12px 15px;border-radius:10px;margin:12px 0}.warn{border-right-color:var(--orange);background:#fff6e9}.task{border:1px dashed #b6b0ef;border-radius:14px;padding:15px;margin:12px 0;background:#fbfaff}.answer{display:none;background:#f0faf5;border-radius:10px;padding:12px;margin-top:10px}.answer.show{display:block}.btn{border:0;border-radius:10px;padding:9px 14px;cursor:pointer;font:inherit;font-size:.9rem;background:var(--purple);color:white}.btn.secondary{background:#e9e8ff;color:#4338a8}.btn.teal{background:var(--teal)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.demo-box{background:#f8f9ff;border:1px solid var(--line);padding:14px;border-radius:13px}.demo-output{white-space:pre-wrap;direction:ltr;text-align:left;font:14px/1.7 Consolas,monospace;background:#171b2e;color:#f2f4ff;border-radius:10px;padding:12px;margin-top:10px;min-height:48px}.progress-wrap{height:8px;background:#e6e8f4;border-radius:99px;overflow:hidden;margin:10px 0 18px}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--teal));transition:width .25s}.checklist label{display:block;padding:5px}.checklist input{accent-color:var(--purple)}.quiz label{display:block;padding:5px}.quiz-result{font-weight:bold;margin-top:8px}.source-link{color:#5147be}footer{padding:20px;color:var(--muted);font-size:.88rem}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:static}.sidebar nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}section,.intro-card{padding:18px}}
+@media print{body{background:white}.sidebar,.btn,.actions{display:none!important}.layout{display:block}section,.intro-card{box-shadow:none;break-inside:avoid}pre{white-space:pre-wrap}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<div class="eyebrow">راهنمای تعاملی پایتون • از صفر تا تحلیل داده</div>
+<h1>NumPy و Pandas؛ دو تا ابزار خفن برای کار با داده‌ها 🚀</h1>
+<p>قرار نیست فقط اسم تابع‌ها رو حفظ کنیم. با مثال‌های واقعی یاد می‌گیریم چطور عددها رو سریع حساب کنیم، جدول‌ها رو مرتب کنیم، داده‌های خراب رو تمیز کنیم و از دل اطلاعات نتیجه بگیریم.</p>
+<div class="chips"><span class="chip">مناسب شروع از پایه</span><span class="chip">مثال + تمرین</span><span class="chip">مینی‌پروژه</span><span class="chip">واژه‌نامه و تقلب‌نامه</span></div>
+</div></header>
+<main>
+<div class="layout">
+<aside class="sidebar"><strong>توی این راهنما</strong><nav>
+<a href="#start">قبل از شروع</a><a href="#numpy">۱. NumPy</a><a href="#numpy-create">ساخت آرایه</a><a href="#numpy-ops">محاسبات</a><a href="#numpy-index">انتخاب و شکل</a><a href="#numpy-random">تصادفی و شرطی</a><a href="#pandas">۲. Pandas</a><a href="#dataframe">جدول و ستون‌ها</a><a href="#clean">تمیزکاری داده</a><a href="#group">گروه‌بندی</a><a href="#merge">ترکیب و فایل‌ها</a><a href="#compare">کِی کدوم؟</a><a href="#practice">تمرین‌ها</a><a href="#project">مینی‌پروژه</a><a href="#cheatsheet">تقلب‌نامه</a></nav></aside>
+<div class="content">
+<div class="intro-card" id="start"><span class="section-kicker">قبل از شروع</span><h2>یه تصویر ساده از ماجرا</h2>
+<p>فرض کن نمره‌های یه کلاس رو داری. اگر بخوای میانگین و بیشترین نمره رو حساب کنی، <b>NumPy</b> خیلی به کارت میاد. اگر بخوای جدول دانش‌آموزها رو فیلتر کنی، اسم‌های تکراری رو پیدا کنی، جای خالی‌ها رو مدیریت کنی یا فایل Excel بخونی، <b>Pandas</b> ابزار مناسب‌تریه.</p>
+<div class="grid2"><div class="mini"><span class="pill">NumPy</span><h3>ماشین‌حساب قدرتمند 🔢</h3><p>برای آرایه‌های عددی و محاسبات سریع روی تعداد زیادی عدد.</p></div><div class="mini"><span class="pill teal">Pandas</span><h3>جدول هوشمند 📊</h3><p>برای داده‌هایی شبیه Excel یا جدول دیتابیس؛ شامل ستون، ردیف و متن و عدد و تاریخ.</p></div></div>
+<div class="note">پیش‌نیاز: متغیر، لیست، شرط، حلقه و تابع در پایتون رو در حد مقدماتی بلد باشی کافیه. مثال‌ها رو می‌تونی در Jupyter Notebook یا Google Colab اجرا کنی؛ برای مثال‌های NumPy و Pandas باید این کتابخونه‌ها در محیطت نصب باشن.</div>
+</div>
+
+<section id="numpy"><span class="section-kicker">بخش اول</span><h2>۱. NumPy چیه و به چه درد می‌خوره؟</h2>
+<p>اسمش از <i>Numerical Python</i> میاد. مهم‌ترین ابزارش آرایه‌ای به اسم <code>ndarray</code> هست. آرایه رو مثل یه ردیف یا جدول از مقدارها تصور کن. NumPy کمک می‌کنه بدون اینکه برای تک‌تک عددها حلقه بنویسی، عملیات رو روی همه‌شون انجام بدی.</p>
+<h3>چرا به‌جای لیست پایتون از NumPy استفاده کنیم؟</h3>
+<pre><code># با لیست معمولی باید روی اعضا حرکت کنیم
+scores = [12, 15, 18]
+new_scores = []
+for score in scores:
+    new_scores.append(score + 2)
+print(new_scores)  # [14, 17, 20]
+
+# با NumPy عملیات رو مستقیم روی کل آرایه انجام می‌دیم
+import numpy as np
+scores_array = np.array([12, 15, 18])
+print(scores_array + 2)  # [14 17 20]</code></pre>
+<p>یه نکته مهم: عملگر <code>+</code> برای لیست و آرایه رفتار یکسانی نداره. برای لیست، اضافه‌کردن یک عدد به لیست به این شکل مجاز نیست؛ اما <code>np.array + 2</code> عدد ۲ رو به تک‌تک اعضا اضافه می‌کنه.</p>
+<h3>کجاها استفاده می‌شه؟</h3>
+<ul><li>محاسبه میانگین، جمع، کمینه و بیشینه</li><li>آمار و تحلیل داده و شبیه‌سازی</li><li>کار با ماتریس‌ها و عملیات جبر خطی</li><li>آماده‌سازی داده‌های عددی برای یادگیری ماشین</li><li>کار با آرایه‌های تصویر و سیگنال</li></ul>
+</section>
+
+<section id="numpy-create"><h2>۲. ساخت آرایه‌ها</h2>
+<h3>آرایه یک‌بعدی</h3><pre><code>import numpy as np
+
+scores = np.array([17, 19, 14, 20])
+print(scores)
+print(scores.ndim)   # تعداد بُعدها: 1
+print(scores.shape)  # شکل آرایه: (4,)
+print(scores.size)   # تعداد کل اعضا: 4
+print(scores.dtype)  # نوع داده، مثلاً int64</code></pre>
+<h3>آرایه دوبعدی؛ مثل جدول</h3><pre><code>scores = np.array([
+    [17, 19, 14],
+    [20, 16, 18]
+])
+print(scores.shape)  # (2, 3): دو ردیف، سه ستون
+print(scores.ndim)   # 2</code></pre>
+<p>آرایه دوبعدی بالا دو ردیف داره؛ هر ردیف می‌تونه نمره‌های یک نفر یا یک گروه رو نگه داره. در آرایه‌های معمول NumPy، اعضا عموماً نوع داده یکسانی دارن.</p>
+<h3>تابع‌های ساخت آرایه که زیاد به کار میان</h3><table><thead><tr><th>کد</th><th>چی می‌سازه؟</th><th>نمونه نتیجه</th></tr></thead><tbody>
+<tr><td><code>np.array([2, 4])</code></td><td>از داده موجود آرایه می‌سازه</td><td><code>[2, 4]</code></td></tr>
+<tr><td><code>np.zeros(4)</code></td><td>چهار تا صفر</td><td><code>[0., 0., 0., 0.]</code></td></tr>
+<tr><td><code>np.ones(3)</code></td><td>سه تا یک</td><td><code>[1., 1., 1.]</code></td></tr>
+<tr><td><code>np.arange(1, 6)</code></td><td>از ۱ تا قبل از ۶</td><td><code>[1, 2, 3, 4, 5]</code></td></tr>
+<tr><td><code>np.linspace(0, 1, 5)</code></td><td>پنج عدد با فاصله مساوی بین دو سر بازه</td><td><code>[0., .25, .5, .75, 1.]</code></td></tr>
+<tr><td><code>np.full(3, 7)</code></td><td>سه بار مقدار ۷</td><td><code>[7, 7, 7]</code></td></tr></tbody></table>
+<div class="task"><b>تمرین کوتاه ۱</b><p>یه آرایه از عددهای ۵ تا ۱۵ بساز. بعد تعداد اعضا و شکلش رو چاپ کن.</p><button class="btn secondary" onclick="toggleAnswer('a1')">دیدن راه‌حل</button><div class="answer" id="a1"><pre><code>numbers = np.arange(5, 16)
+print(numbers)
+print(numbers.size)   # 11
+print(numbers.shape)  # (11,)</code></pre></div></div>
+</section>
+
+<section id="numpy-ops"><h2>۳. عملیات ریاضی و آمار در NumPy</h2>
+<p>تصور کن هر عدد میزان فروش یک روزه. می‌خوای به همه روزها ۱۰ واحد اضافه کنی یا میانگین فروش رو دربیاری. اینجا NumPy حسابی می‌درخشه.</p>
+<pre><code>sales = np.array([10, 20, 30, 40])
+
+print(sales + 5)       # [15 25 35 45]
+print(sales * 2)       # [20 40 60 80]
+print(sales / 10)      # [1. 2. 3. 4.]
+print(sales.sum())     # 100
+print(sales.mean())    # 25.0
+print(sales.min())     # 10
+print(sales.max())     # 40
+print(np.median(sales))# 25.0
+print(sales.std())     # انحراف معیار</code></pre>
+<div class="note"><b>حواست باشه:</b> <code>sales * 2</code> هر عضو رو دو برابر می‌کنه، نه اینکه آرایه رو دو بار پشت‌سرهم تکرار کنه. این رفتار «عنصر به عنصر» (element-wise) نام داره.</div>
+<h3>مقایسه دو آرایه</h3><pre><code>a = np.array([10, 20, 30])
+b = np.array([1,  2,  3])
+
+print(a + b)  # [11 22 33]
+print(a * b)  # [10 40 90]</code></pre>
+<h3>آرایه دوبعدی و axis</h3><pre><code>scores = np.array([
+    [10, 20, 30],
+    [40, 50, 60]
+])
+
+print(scores.sum())          # 210؛ جمع کل
+print(scores.sum(axis=0))    # [50 70 90]؛ جمع هر ستون
+print(scores.sum(axis=1))    # [60 150]؛ جمع هر ردیف
+print(scores.mean(axis=1))   # [20. 50.]؛ میانگین هر ردیف</code></pre>
+<p><b>ترفند حفظی:</b> در آرایه دوبعدی، <code>axis=0</code> یعنی در امتداد ردیف‌ها جمع می‌زنیم و برای هر ستون نتیجه می‌گیریم؛ <code>axis=1</code> یعنی در امتداد ستون‌های هر ردیف جمع می‌زنیم.</p>
+<h3>مرتب‌سازی و پیدا کردن جایگاه</h3><pre><code>numbers = np.array([7, 2, 9, 4])
+print(np.sort(numbers))      # [2 4 7 9]
+print(np.argmax(numbers))    # 2؛ جایگاه بزرگ‌ترین عضو
+print(np.argmin(numbers))    # 1؛ جایگاه کوچک‌ترین عضو</code></pre>
+<p>اینجا جایگاه‌ها از صفر شروع می‌شن؛ پس بزرگ‌ترین عدد یعنی ۹ در اندیس ۲ قرار داره.</p>
+</section>
+
+<section id="numpy-index"><h2>۴. انتخاب اعضا، فیلترکردن و تغییر شکل</h2>
+<h3>اندیس و برش (slicing)</h3><pre><code>numbers = np.array([10, 20, 30, 40, 50])
+print(numbers[0])     # 10؛ عضو اول
+print(numbers[-1])    # 50؛ عضو آخر
+print(numbers[1:4])   # [20 30 40]؛ اندیس ۱ تا قبل از ۴
+print(numbers[::2])   # [10 30 50]؛ یکی درمیون</code></pre>
+<h3>انتخاب با شرط</h3><pre><code>scores = np.array([12, 18, 9, 20, 15])
+passed = scores >= 15
+print(passed)         # [False True False True True]
+print(scores[passed]) # [18 20 15]
+print(scores[scores >= 15])</code></pre>
+<h3>reshape یعنی تغییر شکل</h3><pre><code>numbers = np.arange(1, 7)
+matrix = numbers.reshape(2, 3)
+print(matrix)
+# [[1 2 3]
+#  [4 5 6]]</code></pre>
+<p>تعداد کل خانه‌ها باید ثابت بمونه؛ نمی‌شه ۶ عدد رو به شکل ۴ ردیف و ۲ ستون درآورد، چون ۸ خانه لازم می‌شه.</p>
+<h3>ترکیب آرایه‌ها</h3><pre><code>a = np.array([1, 2])
+b = np.array([3, 4])
+print(np.concatenate([a, b]))  # [1 2 3 4]</code></pre>
+<div class="task"><b>تمرین کوتاه ۲</b><p>از آرایه <code>[4, 11, 8, 17, 20, 3]</code> فقط عددهای بزرگ‌تر از ۱۰ رو جدا کن و بعد آرایه رو به شکل ۲ ردیف و ۳ ستون دربیار.</p><button class="btn secondary" onclick="toggleAnswer('a2')">دیدن راه‌حل</button><div class="answer" id="a2"><pre><code>x = np.array([4, 11, 8, 17, 20, 3])
+print(x[x > 10])  # [11 17 20]
+print(x.reshape(2, 3))</code></pre></div></div>
+</section>
+
+<section id="numpy-random"><h2>۵. عدد تصادفی و انتخاب شرطی</h2>
+<p>برای شبیه‌سازی پرتاب تاس، ساخت داده آزمایشی یا تست‌کردن ایده‌ها می‌تونیم عدد تصادفی بسازیم. برای اینکه نتیجه هر بار قابل تکرار باشه، از seed استفاده می‌کنیم.</p>
+<pre><code>rng = np.random.default_rng(42)
+dice = rng.integers(1, 7, size=10)  # ده عدد از ۱ تا ۶
+print(dice)
+print(np.unique(dice))              # مقدارهای یکتای مشاهده‌شده</code></pre>
+<p>عدد ۷ در <code>integers(1, 7)</code> وارد بازه نمی‌شه؛ حد بالای این تابع در این مثال شامل نمی‌شه.</p>
+<h3>where؛ اگر این شرط درست بود...</h3><pre><code>scores = np.array([8, 12, 17, 9])
+labels = np.where(scores >= 10, "قبول", "نیاز به تمرین")
+print(labels)</code></pre>
+<h3>چند تابع کاربردی دیگه</h3><table><tr><th>تابع</th><th>کاربرد</th></tr><tr><td><code>np.abs(x)</code></td><td>قدر مطلق</td></tr><tr><td><code>np.sqrt(x)</code></td><td>ریشه دوم</td></tr><tr><td><code>np.unique(x)</code></td><td>مقدارهای یکتا</td></tr><tr><td><code>np.where(condition, a, b)</code></td><td>انتخاب مقدار بر اساس شرط</td></tr><tr><td><code>np.clip(x, low, high)</code></td><td>محدودکردن مقدارها به بازه مشخص</td></tr><tr><td><code>np.cumsum(x)</code></td><td>جمع تجمعی</td></tr><tr><td><code>np.percentile(x, 50)</code></td><td>صدک ۵۰؛ معادل میانه در تعریف معمول</td></tr></table>
+</section>
+
+<section id="pandas"><span class="section-kicker">بخش دوم</span><h2>۶. Pandas چیه؟</h2>
+<p>Pandas کتابخونه‌ای برای کار با داده‌های جدولی و سری‌های داده است. اگه داده‌هات توی فایل CSV، اکسل یا خروجی دیتابیس باشن، Pandas می‌تونه خوندن، بررسی، تمیزکاری، فیلتر، تحلیل و ذخیره‌کردنشون رو راحت کنه.</p>
+<div class="grid2"><div class="mini"><h3><code>Series</code></h3><p>مثل یک ستون از داده‌هاست؛ مثلاً فقط نمره‌ها یا فقط اسم‌ها.</p><pre><code>import pandas as pd
+scores = pd.Series([17, 19, 14])
+print(scores)</code></pre></div><div class="mini"><h3><code>DataFrame</code></h3><p>مثل یک جدول کامل با چند ردیف و چند ستون.</p><pre><code>df = pd.DataFrame({
+    "name": ["آوا", "پارسا"],
+    "score": [18, 16]
+})
+print(df)</code></pre></div></div>
+<p>برای راحتی، معمولاً Pandas رو با اسم کوتاه <code>pd</code> وارد می‌کنیم. NumPy هم معمولاً با <code>np</code> شناخته می‌شه.</p>
+</section>
+
+<section id="dataframe"><h2>۷. ساخت جدول و دیدن اطلاعاتش</h2>
+<p>بیایم یه جدول کوچیک از دانش‌آموزها بسازیم و ازش برای مثال‌های بعدی استفاده کنیم.</p>
+<pre><code>import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "name": ["آوا", "پارسا", "رها", "کیان", "آوا"],
+    "city": ["تهران", "تبریز", "تهران", "شیراز", "تهران"],
+    "score": [18, 15, 20, np.nan, 18],
+    "hours": [4, 2, 5, 1, 4]
+})
+
+print(df.head())       # پنج ردیف اول
+print(df.shape)        # تعداد ردیف و ستون
+print(df.columns)      # نام ستون‌ها
+print(df.dtypes)       # نوع داده هر ستون
+print(df.info())       # خلاصه ساختار جدول
+print(df.describe())   # آمار ستون‌های عددی</code></pre>
+<div class="note warn"><b>یه نکته:</b> <code>np.nan</code> یعنی مقدار عددی موجود نیست یا گم شده. در دنیای واقعی ممکنه دانش‌آموز نمره نداده باشه یا اطلاعات به‌درستی ثبت نشده باشه.</div>
+<h3>انتخاب ستون و ردیف</h3><pre><code>print(df["name"])               # یک ستون؛ خروجی Series
+print(df[["name", "score"]])    # دو ستون؛ خروجی DataFrame
+print(df.iloc[0])                # ردیف اول بر اساس جایگاه
+print(df.loc[0, "name"])         # مقدار ستون name در برچسب ردیف ۰</code></pre>
+<p><code>iloc</code> با جایگاه عددی کار می‌کنه. <code>loc</code> با برچسب ردیف و نام ستون. وقتی اندیس پیش‌فرض رو تغییر بدی، این فرق مهم می‌شه.</p>
+<h3>فیلتر کردن ردیف‌ها</h3><pre><code>print(df[df["score"] >= 18])       # نمره ۱۸ یا بیشتر
+print(df[df["city"] == "تهران"])   # فقط تهران
+print(df[(df["score"] >= 18) & (df["hours"] >= 4)])
+print(df[df["city"].isin(["تهران", "تبریز"])])</code></pre>
+<p>برای ترکیب شرط‌ها در Pandas از <code>&amp;</code> برای «و» و <code>|</code> برای «یا» استفاده می‌کنیم و هر شرط رو داخل پرانتز می‌ذاریم. از <code>and</code> و <code>or</code> معمولی برای این فیلترها استفاده نکن.</p>
+<h3>ساختن ستون جدید</h3><pre><code>df["score_plus_one"] = df["score"] + 1
+df["passed"] = df["score"] >= 10
+print(df[["name", "score", "score_plus_one", "passed"]])</code></pre>
+<p>محاسبه روی یک ستون معمولاً برای همه ردیف‌ها انجام می‌شه؛ لازم نیست دستی روی تک‌تک ردیف‌ها حلقه بزنی.</p>
+<h3>مرتب‌سازی و انتخاب چند ردیف</h3><pre><code>print(df.sort_values("score", ascending=False))
+print(df.sort_values(["city", "score"]))
+print(df.nlargest(3, "score"))   # سه نمره بزرگ؛ ردیف‌های دارای مقدار گمشده معمولاً انتخاب نمی‌شن</code></pre>
+</section>
+
+<section id="clean"><h2>۸. تمیزکاری داده‌ها (Data Cleaning)</h2>
+<p>داده واقعی معمولاً بی‌نقص نیست: بعضی خانه‌ها خالی‌ان، اسم‌ها چند جور نوشته شدن، ردیف تکراری داریم یا عددها اشتباهی به شکل متن ذخیره شدن. قبل از نتیجه‌گیری باید این موارد رو بررسی کنیم.</p>
+<h3>پیدا کردن داده‌های خالی</h3><pre><code>print(df.isna())             # برای هر خانه: خالی هست یا نه؟
+print(df.isna().sum())       # تعداد مقدارهای خالی هر ستون
+print(df["score"].isna())    # فقط ستون نمره</code></pre>
+<h3>جایگزین کردن یا حذف مقدارهای خالی</h3><pre><code># جایگزینی مقدار خالی نمره با میانگین نمره‌ها
+df["score_filled"] = df["score"].fillna(df["score"].mean())
+
+# حذف ردیف‌هایی که score آن‌ها خالی است (فقط روی خروجی)
+without_missing = df.dropna(subset=["score"])
+
+# نکته: fillna و dropna را آگاهانه انتخاب کن؛
+# پرکردن با میانگین همیشه تصمیم درستی نیست.</code></pre>
+<h3>تکراری‌ها و متن‌ها</h3><pre><code>print(df.duplicated())                 # ردیف‌های تکراری کامل
+print(df.drop_duplicates())             # حذف ردیف‌های کاملاً تکراری
+print(df["name"].str.strip())           # حذف فاصله از ابتدا و انتهای متن
+print(df["name"].str.lower())           # حروف انگلیسی را کوچک می‌کند
+print(df["city"].value_counts())        # تعداد هر شهر</code></pre>
+<p>برای متن فارسی، <code>lower()</code> معمولاً کاربردی برای حروف فارسی نداره، اما برای متن انگلیسی مفیده. پاک‌سازی متن فارسی ممکنه به یکسان‌سازی «ی/ي»، «ک/ك» و فاصله‌ها هم نیاز داشته باشه.</p>
+<h3>تبدیل نوع داده</h3><pre><code>raw = pd.DataFrame({"score": ["18", "15", "نامشخص"]})
+raw["score_num"] = pd.to_numeric(raw["score"], errors="coerce")
+print(raw)</code></pre>
+<p>با <code>errors="coerce"</code> مقدارهایی که به عدد تبدیل نمی‌شن به مقدار گمشده تبدیل می‌شن تا بتونیم بعداً بررسی‌شون کنیم؛ این کار نباید باعث بشه بدون بررسی، داده مهمی رو نادیده بگیریم.</p>
+</section>
+
+<section id="group"><h2>۹. آمار، گروه‌بندی و تحلیل داده</h2>
+<p>فرض کن مدیر مدرسه می‌پرسه: «میانگین نمره هر شهر چقدره؟» یا «چند دانش‌آموز از هر شهر داریم؟» لازم نیست دستی بشمری؛ از گروه‌بندی استفاده کن.</p>
+<pre><code>print(df["score"].mean())      # میانگین؛ مقدارهای گمشده پیش‌فرض نادیده گرفته می‌شن
+print(df["score"].median())    # میانه
+print(df["score"].min())
+print(df["score"].max())
+print(df["score"].sum())
+print(df["city"].value_counts())
+
+# میانگین نمره در هر شهر
+print(df.groupby("city")["score"].mean())
+
+# چند آمار به‌صورت همزمان
+summary = df.groupby("city").agg(
+    average_score=("score", "mean"),
+    highest_score=("score", "max"),
+    student_count=("name", "count")
+)
+print(summary)</code></pre>
+<p>ایده <code>groupby</code> اینه: اول داده‌ها رو به گروه‌های جدا تقسیم می‌کنیم، بعد روی هر گروه محاسبه انجام می‌دیم و در آخر نتیجه‌ها رو کنار هم می‌ذاریم.</p>
+<h3>جدول محوری (Pivot Table)</h3><pre><code># میانگین نمره هر شهر؛ خروجی به شکل جدول خلاصه
+pivot = pd.pivot_table(
+    df,
+    values="score",
+    index="city",
+    aggfunc="mean"
+)
+print(pivot)</code></pre>
+<h3>کار با تاریخ</h3><pre><code>events = pd.DataFrame({
+    "date": ["2026-10-01", "2026-10-02", "2026-10-03"],
+    "visits": [120, 150, 90]
+})
+events["date"] = pd.to_datetime(events["date"])
+events["day"] = events["date"].dt.day
+events["weekday"] = events["date"].dt.day_name()
+print(events)</code></pre>
+<p>تاریخ‌ها رو می‌شه به ماه، روز هفته و بازه‌های زمانی تبدیل کرد؛ برای تحلیل بازدید سایت، فروش روزانه یا حضور دانش‌آموزها خیلی کاربردیه.</p>
+</section>
+
+<section id="merge"><h2>۱۰. خواندن و ذخیره فایل‌ها + ترکیب جدول‌ها</h2>
+<h3>خواندن و ذخیره کردن</h3><pre><code># فایل باید در مسیر قابل دسترس محیط پایتون باشه
+data = pd.read_csv("students.csv")
+excel_data = pd.read_excel("students.xlsx")  # ممکنه به openpyxl نیاز داشته باشه
+
+data.to_csv("clean_students.csv", index=False)
+data.to_excel("clean_students.xlsx", index=False)</code></pre>
+<p><code>index=False</code> یعنی شماره ردیف Pandas رو به‌عنوان یک ستون اضافه در فایل ذخیره نکن.</p>
+<h3>ترکیب جدول‌ها مثل JOIN در SQL</h3><pre><code>students = pd.DataFrame({
+    "student_id": [1, 2, 3],
+    "name": ["آوا", "پارسا", "رها"]
+})
+results = pd.DataFrame({
+    "student_id": [1, 3],
+    "score": [18, 20]
+})
+
+combined = students.merge(results, on="student_id", how="left")
+print(combined)</code></pre>
+<table><tr><th>نوع merge</th><th>معنای ساده</th></tr><tr><td><code>how="inner"</code></td><td>فقط کلیدهایی که در هر دو جدول وجود دارن</td></tr><tr><td><code>how="left"</code></td><td>همه ردیف‌های جدول سمت چپ؛ اطلاعات متناظر از جدول راست اضافه می‌شه</td></tr><tr><td><code>how="right"</code></td><td>همه ردیف‌های جدول سمت راست</td></tr><tr><td><code>how="outer"</code></td><td>همه کلیدهای هر دو جدول؛ جاهای بدون تطبیق خالی می‌مونن</td></tr></table>
+<h3>چسباندن جدول‌ها</h3><pre><code>term1 = pd.DataFrame({"name": ["آوا"], "score": [18]})
+term2 = pd.DataFrame({"name": ["پارسا"], "score": [16]})
+
+all_students = pd.concat([term1, term2], ignore_index=True)
+print(all_students)</code></pre>
+<p><code>merge</code> برای وصل‌کردن جدول‌ها با یک کلید مشترک شبیه JOIN استفاده می‌شه؛ <code>concat</code> برای چسباندن جدول‌ها به هم، معمولاً از نظر ردیف یا ستون.</p>
+</section>
+
+<section id="compare"><h2>۱۱. NumPy یا Pandas؟</h2>
+<table><tr><th>نیاز تو</th><th>ابزار پیشنهادی</th><th>مثال</th></tr><tr><td>محاسبه سریع روی تعداد زیادی عدد</td><td><code>NumPy</code></td><td>میانگین نمره‌ها</td></tr><tr><td>داده جدولی با اسم و شهر و نمره</td><td><code>Pandas</code></td><td>فیلتر دانش‌آموزهای یک شهر</td></tr><tr><td>خواندن Excel و CSV</td><td><code>Pandas</code></td><td><code>pd.read_csv(...)</code></td></tr><tr><td>آرایه‌های چندبعدی و جبر خطی</td><td><code>NumPy</code></td><td>ضرب ماتریس‌ها</td></tr><tr><td>گروه‌بندی و خلاصه‌سازی جدول</td><td><code>Pandas</code></td><td><code>groupby</code></td></tr><tr><td>تحلیل داده عددی در پروژه ML</td><td>هر دو</td><td>Pandas برای جدول، NumPy برای آرایه عددی</td></tr></table>
+<div class="note">این دو رقیب هم نیستن! Pandas برای خیلی از محاسبات عددی از قابلیت‌های NumPy استفاده می‌کنه. در پروژه واقعی ممکنه اول داده رو با Pandas تمیز کنی و بعد بخش عددی رو با NumPy یا کتابخونه‌های یادگیری ماشین انجام بدی.</div>
+</section>
+
+<section id="practice"><h2>۱۲. تمرین‌های خودت رو حل کن 💪</h2><p class="muted">اول خودت فکر کن؛ بعد دکمه راه‌حل رو بزن. بهتره کد رو واقعاً در محیط پایتون اجرا کنی.</p>
+<div class="task"><b>تمرین ۱ — NumPy | سطح آسون</b><p>آرایه نمره‌ها اینه: <code>[12, 18, 16, 9, 20, 14]</code>. میانگین، کمترین و بیشترین نمره رو چاپ کن.</p><button class="btn secondary" onclick="toggleAnswer('p1')">راه‌حل</button><div class="answer" id="p1"><pre><code>scores = np.array([12, 18, 16, 9, 20, 14])
+print(scores.mean())
+print(scores.min())
+print(scores.max())</code></pre></div></div>
+<div class="task"><b>تمرین ۲ — NumPy | سطح متوسط</b><p>از همون آرایه، نمره‌های ۱۵ یا بیشتر رو جدا کن و جایگاه نمره بیشینه رو پیدا کن.</p><button class="btn secondary" onclick="toggleAnswer('p2')">راه‌حل</button><div class="answer" id="p2"><pre><code>print(scores[scores >= 15])
+print(scores.argmax())</code></pre></div></div>
+<div class="task"><b>تمرین ۳ — Pandas | سطح آسون</b><p>جدولی با ستون‌های <code>name</code> و <code>score</code> برای سه نفر بساز. بعد فقط ردیف‌های نمره بالای ۱۵ رو نمایش بده.</p><button class="btn secondary" onclick="toggleAnswer('p3')">راه‌حل</button><div class="answer" id="p3"><pre><code>students = pd.DataFrame({
+    "name": ["آوا", "پارسا", "رها"],
+    "score": [18, 13, 20]
+})
+print(students[students["score"] > 15])</code></pre></div></div>
+<div class="task"><b>تمرین ۴ — Pandas | تمیزکاری</b><p>یه ستون قیمت با مقادیر <code>[100, None, 300, 200]</code> بساز. مقدار خالی رو پیدا کن و تعداد مقدارهای خالی رو حساب کن.</p><button class="btn secondary" onclick="toggleAnswer('p4')">راه‌حل</button><div class="answer" id="p4"><pre><code>prices = pd.DataFrame({"price": [100, None, 300, 200]})
+print(prices["price"].isna())
+print(prices["price"].isna().sum())</code></pre></div></div>
+<div class="task"><b>تمرین ۵ — Pandas | گروه‌بندی</b><p>جدولی از شهر و فروش بساز و مجموع فروش هر شهر رو حساب کن.</p><button class="btn secondary" onclick="toggleAnswer('p5')">راه‌حل</button><div class="answer" id="p5"><pre><code>sales = pd.DataFrame({
+    "city": ["تهران", "تبریز", "تهران", "شیراز", "تبریز"],
+    "amount": [100, 80, 50, 40, 20]
+})
+print(sales.groupby("city")["amount"].sum())</code></pre></div></div>
+<div class="task"><b>تمرین ۶ — ترکیبی | یکم چالشی‌تر</b><p>یک جدول از نام محصول، قیمت و تعداد فروش بساز؛ ستون درآمد رو از ضرب قیمت در تعداد به‌دست بیار و بعد درآمد کل رو حساب کن.</p><button class="btn secondary" onclick="toggleAnswer('p6')">راه‌حل</button><div class="answer" id="p6"><pre><code>shop = pd.DataFrame({
+    "product": ["دفتر", "خودکار", "مداد"],
+    "price": [50000, 20000, 10000],
+    "quantity": [3, 5, 10]
+})
+shop["revenue"] = shop["price"] * shop["quantity"]
+print(shop)
+print(shop["revenue"].sum())</code></pre></div></div>
+<h3>آزمون کوچولو</h3><div class="demo-box quiz" id="quiz">
+<p><b>۱) برای خواندن فایل CSV معمولاً از کدوم استفاده می‌کنیم؟</b></p>
+<label><input type="radio" name="q1" value="a"> <code>np.read_csv()</code></label><label><input type="radio" name="q1" value="b"> <code>pd.read_csv()</code></label><label><input type="radio" name="q1" value="c"> <code>pd.open_file()</code></label>
+<hr><p><b>۲) خروجی <code>np.array([2, 4]) * 3</code> چیه؟</b></p><label><input type="radio" name="q2" value="a"> <code>[2, 4, 2, 4, 2, 4]</code></label><label><input type="radio" name="q2" value="b"> <code>[5, 7]</code></label><label><input type="radio" name="q2" value="c"> <code>[6, 12]</code></label>
+<hr><p><b>۳) برای گروه‌بندی داده‌ها در Pandas از کدوم استفاده می‌کنیم؟</b></p><label><input type="radio" name="q3" value="a"> <code>groupby()</code></label><label><input type="radio" name="q3" value="b"> <code>reshape()</code></label><label><input type="radio" name="q3" value="c"> <code>argmax()</code></label>
+<button class="btn teal" onclick="gradeQuiz()">بررسی جواب‌ها</button><div class="quiz-result" id="quizResult"></div></div>
+</section>
+
+<section id="project"><span class="section-kicker">پروژه پایانی</span><h2>۱۳. مینی‌پروژه: تحلیل فروش یک فروشگاه 🛍️</h2>
+<p>حالا فرض کن یه فروشگاه کوچیک بهت داده‌هاش رو داده و می‌خواد بفهمه چه محصولی درآمد بیشتری داشته. این پروژه رو قدم‌به‌قدم انجام بده.</p>
+<pre><code>import pandas as pd
+import numpy as np
+
+shop = pd.DataFrame({
+    "product": ["دفتر", "خودکار", "دفتر", "مداد", "خودکار", "مداد"],
+    "category": ["تحریر", "تحریر", "تحریر", "تحریر", "تحریر", "تحریر"],
+    "price": [50000, 20000, 50000, 10000, 20000, 10000],
+    "quantity": [3, 10, 2, 20, 5, 10]
+})
+
+# ۱) درآمد هر ردیف رو بساز
+shop["revenue"] = shop["price"] * shop["quantity"]
+
+# ۲) اطلاعات رو ببین و خلاصه بگیر
+print(shop.head())
+print(shop.describe())
+
+# ۳) درآمد کل هر محصول
+by_product = shop.groupby("product")["revenue"].sum()
+print(by_product)
+
+# ۴) محصول با بیشترین درآمد
+print(by_product.idxmax())
+
+# ۵) ذخیره گزارش
+shop.to_csv("shop_report.csv", index=False)</code></pre>
+<h3>چالش‌های اضافه</h3><ul><li>محصول‌ها رو از بیشترین درآمد به کمترین مرتب کن.</li><li>میانگین تعداد فروش هر محصول رو به‌دست بیار.</li><li>قیمت یکی از ردیف‌ها رو خالی کن و راهی برای مدیریت مقدار خالی پیشنهاد بده.</li><li>یک ستون تخفیف اضافه کن و درآمد بعد از تخفیف رو حساب کن.</li><li>در دو جمله توضیح بده کدوم محصول بهتر فروخته و چرا؛ فقط به تعداد نگاه نکن، درآمد رو هم بررسی کن.</li></ul>
+</section>
+
+<section id="cheatsheet"><h2>۱۴. تقلب‌نامه سریع 📌</h2>
+<div class="grid2"><div class="mini"><h3>NumPy</h3><pre><code>np.array([...])       # ساخت آرایه
+np.arange(0, 10)      # بازه عددی
+x.shape               # شکل آرایه
+x.reshape(2, 3)       # تغییر شکل
+x.mean()              # میانگین
+x.sum()               # جمع
+x.max(), x.min()      # بیشینه و کمینه
+x[x > 10]             # فیلتر شرطی
+np.sort(x)            # مرتب‌سازی
+np.unique(x)          # مقادیر یکتا
+np.where(cond, a, b)  # انتخاب شرطی</code></pre></div><div class="mini"><h3>Pandas</h3><pre><code>pd.DataFrame({...})   # ساخت جدول
+pd.read_csv("x.csv")  # خواندن CSV
+df.head()             # چند ردیف اول
+df.shape              # ابعاد جدول
+df["col"]             # انتخاب ستون
+df.loc[0, "col"]      # برچسب ردیف/ستون
+df[df["col"] > 5]     # فیلتر
+df.isna().sum()       # مقدارهای خالی
+df.drop_duplicates()  # حذف تکراری‌ها
+df.groupby("col")     # گروه‌بندی
+df.merge(other, on="id") # اتصال
+df.to_csv("out.csv", index=False)</code></pre></div></div>
+<h3>چک‌لیست یادگیری</h3><div class="checklist">
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم آرایه NumPy بسازم و shape و ndim رو توضیح بدم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم عملیات ریاضی و آماری روی آرایه انجام بدم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم با شرط، داده‌های موردنظر رو جدا کنم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم یک DataFrame بسازم و ستون و ردیف انتخاب کنم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم داده خالی و تکراری رو تشخیص بدم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم با groupby گزارش خلاصه بسازم.</label>
+<label><input type="checkbox" onchange="updateProgress()"> می‌تونم دو جدول رو با merge ترکیب کنم و CSV ذخیره کنم.</label>
+<div class="progress-wrap"><div class="progress" id="progress"></div></div><div id="progressText" class="muted">۰ از ۷ مهارت تیک خورده.</div>
+</div>
+</section>
+
+<section><h2>۱۵. قدم بعدی چیه؟</h2><p>وقتی این مباحث رو تمرین کردی، مسیر خوب اینه: <b>Matplotlib</b> برای نمودار، بعد آمار و تحلیل اکتشافی داده (EDA)، بعد پروژه‌های واقعی با CSV/Excel و در ادامه یادگیری ماشین.</p><p>برای مرجع دقیق‌تر و مباحث پیشرفته، این دو منبع رسمی رو نگه دار:</p><ul><li><a class="source-link" href="https://numpy.org/doc/stable/user/absolute_beginners.html" target="_blank" rel="noopener">راهنمای مبتدی NumPy</a></li><li><a class="source-link" href="https://pandas.pydata.org/docs/getting_started/index.html" target="_blank" rel="noopener">راهنمای شروع Pandas</a></li></ul>
+<div class="note">نکته آخر: لازم نیست همه تابع‌ها رو حفظ کنی. مهم‌تر اینه که بدونی مسئله‌ات چیه، چه داده‌ای داری، چطور نتیجه رو بررسی کنی و چطور مطمئن بشی تحلیلت گمراه‌کننده نیست.</div>
+</section>
+</div></div>
+</main>
+<footer>راهنمای آموزشی NumPy و Pandas • مثال‌ها برای تمرین آموزشی ساخته شده‌اند. برای خروجی درست، کدها را در محیط Python اجرا کنید.</footer>
+<script>
+function toggleAnswer(id){const el=document.getElementById(id);el.classList.toggle('show')}
+function gradeQuiz(){const answers={q1:'b',q2:'c',q3:'a'};let score=0;for(const [q,a] of Object.entries(answers)){const selected=document.querySelector('input[name="'+q+'"]:checked');if(selected&&selected.value===a)score++}const msg=score===3?'آفرین! هر سه جواب درسته 🎉':`از ۳ سؤال، ${score} تا درست بود. جواب‌ها رو دوباره بررسی کن و یک بار دیگه امتحان کن.`;document.getElementById('quizResult').textContent=msg}
+function updateProgress(){const boxes=[...document.querySelectorAll('.checklist input[type="checkbox"]')];const done=boxes.filter(b=>b.checked).length;document.getElementById('progress').style.width=(done/boxes.length*100)+'%';document.getElementById('progressText').textContent=`${done} از ${boxes.length} مهارت تیک خورده.`}
+</script>
+</body>
+</html>
